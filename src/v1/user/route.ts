@@ -12,6 +12,7 @@ const User = async (app: FastifyInstance) => {
     handler: await submitKycToDb,
   });
 
+  /** @description check user kyc status */
   app.route({
     method: methods.POST,
     url: '/status',

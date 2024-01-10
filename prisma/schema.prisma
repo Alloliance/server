@@ -26,7 +26,7 @@ model Kyc {
     kyc_id  Int @id @default(autoincrement())
     user_id Int @unique
 
-    kyc_type KycType
+    kyc_status KycStatus
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt()
@@ -37,7 +37,7 @@ model Kyc {
     user User @relation(fields: [user_id], references: [user_id])
 }
 
-enum KycType {
+enum KycStatus {
     SUBMITTED
     SUCCESSFUL
     UNSUCCESSFUL

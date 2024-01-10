@@ -8,6 +8,7 @@ import rateLimit from '@fastify/rate-limit';
 
 import Home from './v1/init';
 import User from './v1/user/route';
+import Admin from './v1/admin/route';
 
 const startServer = async () => {
   try {
@@ -19,7 +20,8 @@ const startServer = async () => {
       .register(helmet)
       .register(rateLimit)
       .register(Home)
-      .register(User, { prefix: '/v1/user' });
+      .register(User, { prefix: '/v1/user' })
+      .register(Admin, { prefix: '/v1/admin' });
 
     const serverOptions = {
       port: Number(process.env.PORT) || 5000,

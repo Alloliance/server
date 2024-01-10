@@ -1,5 +1,5 @@
 import { FastifyRequestTypebox, FastifyReplyTypebox } from '@/v1/fastifyTypes';
-import { KycType } from '@prisma/client';
+import { KycStatus } from '@prisma/client';
 import { prisma } from '@/db/index';
 import { ERRORS } from '@/helpers/errors';
 import { SubmitInput, StatusInput } from './schema';
@@ -19,7 +19,7 @@ export async function submitKycToDb(
         wallet_address: wallet_address,
         Kyc: {
           create: {
-            kyc_type: KycType.SUBMITTED,
+            kyc_status: KycStatus.SUBMITTED,
             document_type: document_type,
             kyc_data: kyc_data,
           },
@@ -53,7 +53,7 @@ export async function checkVerificationStatus(
         created_at: false,
         Kyc: {
           select: {
-            kyc_type: true,
+            kyc_status: true,
           },
         },
       },
