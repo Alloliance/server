@@ -9,7 +9,14 @@ export async function submitKycToDb(
   req: FastifyRequestTypebox<typeof SubmitInput>,
   rep: FastifyReplyTypebox<typeof SubmitInput>
 ): Promise<void> {
-  const { email, wallet_address, name, document_type, kyc_data } = req.body;
+  const {
+    email,
+    wallet_address,
+    name,
+    document_type,
+    kyc_data,
+    allo_profile_id,
+  } = req.body;
 
   try {
     const kycSubmitted = await prisma.user.create({
@@ -17,6 +24,7 @@ export async function submitKycToDb(
         name: name,
         email: email,
         wallet_address: wallet_address,
+        allo_profile_id: allo_profile_id,
         Kyc: {
           create: {
             kyc_status: KycStatus.SUBMITTED,

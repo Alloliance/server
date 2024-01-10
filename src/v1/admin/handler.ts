@@ -10,13 +10,16 @@ export async function updateVerificationStatus(
   req: FastifyRequestTypebox<typeof UpdateStatusInput>,
   rep: FastifyReplyTypebox<typeof UpdateStatusInput>
 ): Promise<void> {
-  const { user_id, kyc_status, allo_profile_id } = req.body;
+  const { user_id, kyc_status } = req.body;
 
   try {
     const updatedUserKycStatus = await prisma.kyc.update({
       where: { user_id: user_id },
       data: {
         kyc_status: kyc_status,
+      },
+      select: {
+        user: true,
       },
     });
 
@@ -25,7 +28,7 @@ export async function updateVerificationStatus(
     else {
       const metadata = await allolianceSdk.createKYCMetadata(
         user_id.toString(),
-        allo_profile_id,
+        updatedUserKycStatus.user.allo_profile_id,
         true
       );
       const ipfsHash = await allolianceSdk.uploadMetadataToIpfs(metadata);
@@ -58,6 +61,7 @@ export async function fetchAllUsers(
     const userKycStatus = await prisma.user.findMany({
       select: {
         user_id: true,
+        allo_profile_id: true,
         email: true,
         wallet_address: true,
         name: true,
