@@ -12,24 +12,7 @@ import { DocumentType } from '@prisma/client';
  */
 
 export const SubmitInput = {
-  body: t.Object({
-    documents: t.Array(
-      t.Object({
-        type: t.Enum(DocumentType),
-        pages: t.Array(
-          t.Object({
-            base64: t.String(),
-            side: t.Optional(t.String()),
-          })
-        ),
-      })
-    ),
-    endUserInfo: t.Object({
-      email: t.String(),
-      wallet_address: t.String(),
-      phone: t.String(),
-    }),
-  }),
+  body: t.Any(),
   response: {
     200: t.Object({
       data: t.Any(),
