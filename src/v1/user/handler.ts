@@ -1,5 +1,5 @@
 import { FastifyRequestTypebox, FastifyReplyTypebox } from '@/v1/fastifyTypes';
-import { KycStatus } from '@prisma/client';
+import { KycStatus, DocumentType } from '@prisma/client';
 import { prisma } from '@/config/db';
 import { ERRORS } from '@/helpers/errors';
 import { SubmitInput, StatusInput } from './schema';
@@ -10,18 +10,26 @@ export async function submitKycToDb(
   rep: FastifyReplyTypebox<typeof SubmitInput>
 ): Promise<void> {
   const { documents, endUserInfo } = req.body as any;
+  console.log(
+    req.body,
+    'onrender body',
+    documents[1].type,
+    'type doc',
+    typeof documents[1].type,
+    'BEEEEST'
+  );
 
   try {
     const kycSubmitted = await prisma.user.create({
       data: {
         name: 'Jeff', // default unless we pass in frontend
         email: endUserInfo.email,
-        wallet_address: endUserInfo.wallet_address,
+        wallet_address: endUserInfo.id,
         allo_profile_id: endUserInfo.phone,
         Kyc: {
           create: {
             kyc_status: KycStatus.SUBMITTED,
-            document_type: documents[1].type,
+            document_type: DocumentType.ID_CARD,
             kyc_data: { ...documents[0].pages, ...documents[1].pages },
           },
         },
