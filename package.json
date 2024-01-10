@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "nodemon",
 		"build": "tsc -p tsconfig.json",
-		"start": "npx run db:generate && ts-node -r tsconfig-paths/register build/index.js",
+		"start": "ts-node -r tsconfig-paths/register build/index.js",
 		"rebuild": "rm -rf build/ && tsc -p tsconfig.json",
 		"reinstall": "rm -rf node_modules/ package-lock.json && npm i",
 		"db:generate": "prisma generate",
