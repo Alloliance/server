@@ -1,6 +1,7 @@
 import { FastifyRequestTypebox, FastifyReplyTypebox } from '@/v1/fastifyTypes';
 import { prisma } from '@/config/db';
 import { ERRORS } from '@/helpers/errors';
+import { KycStatus } from '@/config/db';
 import { UpdateStatusInput, FetchAllUsersInputs } from './schema';
 import { ERROR500, STANDARD } from '@/helpers/constants';
 import { allolianceSdk } from '@/config/sdk';
@@ -33,8 +34,15 @@ export async function updateVerificationStatus(
         rep
           .code(STANDARD.SUCCESS)
           .send({ data: updatedUserKycStatus, ...ipfsHash });
-      } else
+      } else {
+        await prisma.kyc.update({
+          where: { user_id: user_id },
+          data: {
+            kyc_status: KycStatus.SUBMITTED,
+          },
+        });
         rep.code(STANDARD.NOCONTENT).send({ msg: ERRORS.failedIpfsUpload });
+      }
     }
   } catch (error) {
     console.error('Error fetching user status: ', error);
