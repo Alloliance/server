@@ -12,7 +12,7 @@ This is an [FastifyTS](https://fastify.dev/) REST API that uses [Prisma](https:/
 ## 💁‍♀️ How to use
 
 - Install dependencies `npm i`
-- Migrate the database `run run migrate:dev`
+- Migrate the database `run run db:migrate`
 - Run the development Server app `npm run dev`
 - Run the production Server app `npm run build && npm run start`
 
