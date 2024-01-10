@@ -7,7 +7,7 @@ export const SubmitInput = {
     wallet_address: t.String(),
     name: t.Optional(t.String()),
     document_type: t.Enum(DocumentType),
-	allo_profile_id: t.String(),
+	phone: t.String(),
     kyc_data: t.Object({
       front: t.String(),
       back: t.String(),

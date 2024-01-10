@@ -15,7 +15,7 @@ export async function submitKycToDb(
     name,
     document_type,
     kyc_data,
-    allo_profile_id,
+    phone,
   } = req.body;
 
   try {
@@ -24,7 +24,7 @@ export async function submitKycToDb(
         name: name,
         email: email,
         wallet_address: wallet_address,
-        allo_profile_id: allo_profile_id,
+        allo_profile_id: phone,
         Kyc: {
           create: {
             kyc_status: KycStatus.SUBMITTED,
