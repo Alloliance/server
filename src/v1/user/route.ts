@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { methods } from '@/helpers/api';
-import { submitKycToDb } from './handler';
-import { SubmitInput } from './schema';
+import { submitKycToDb, checkVerificationStatus } from './handler';
+import { SubmitInput, StatusInput } from './schema';
 
 const User = async (app: FastifyInstance) => {
   /** @description submit frontend kyc info plus */
@@ -10,6 +10,13 @@ const User = async (app: FastifyInstance) => {
     url: '/submit',
     schema: SubmitInput,
     handler: await submitKycToDb,
+  });
+
+  app.route({
+    method: methods.POST,
+    url: '/status',
+    schema: StatusInput,
+    handler: await checkVerificationStatus,
   });
 };
 

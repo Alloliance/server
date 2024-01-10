@@ -13,13 +13,13 @@ const startServer = async () => {
   try {
     const server = fastify()
       .withTypeProvider<TypeBoxTypeProvider>()
-	  .register(accepts)
+      .register(accepts)
       .register(cors)
-	  .register(formbody)
+      .register(formbody)
       .register(helmet)
       .register(rateLimit)
       .register(Home)
-      .register(User, { prefix: '/v1' })
+      .register(User, { prefix: '/v1/user' });
 
     const serverOptions = {
       port: Number(process.env.PORT) || 5000,
