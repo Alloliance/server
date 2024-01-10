@@ -3,7 +3,7 @@ import { KycStatus } from '@prisma/client';
 import { prisma } from '@/db/index';
 import { ERRORS } from '@/helpers/errors';
 import { SubmitInput, StatusInput } from './schema';
-import { ERROR404, ERROR500, STANDARD } from '@/helpers/constants';
+import { ERROR500, STANDARD } from '@/helpers/constants';
 
 export async function submitKycToDb(
   req: FastifyRequestTypebox<typeof SubmitInput>,
@@ -28,7 +28,7 @@ export async function submitKycToDb(
     });
 
     if (!kycSubmitted)
-      rep.code(ERROR404.statusCode).send({ msg: ERRORS.createKycError });
+      rep.code(STANDARD.NOCONTENT).send({ msg: ERRORS.createKycError });
     else rep.code(STANDARD.SUCCESS).send({ data: kycSubmitted });
   } catch (error) {
     console.error('Error checking submitting kyc: ', error);
@@ -60,7 +60,7 @@ export async function checkVerificationStatus(
     });
 
     if (!userKycStatus)
-      rep.code(ERROR404.statusCode).send({ msg: ERRORS.userNotExists });
+      rep.code(STANDARD.NOCONTENT).send({ msg: ERRORS.userNotExists });
     else rep.code(STANDARD.SUCCESS).send({ data: userKycStatus });
   } catch (error) {
     console.error('Error fetching user status: ', error);

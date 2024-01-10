@@ -2,7 +2,7 @@ import { FastifyRequestTypebox, FastifyReplyTypebox } from '@/v1/fastifyTypes';
 import { prisma } from '@/db/index';
 import { ERRORS } from '@/helpers/errors';
 import { UpdateStatusInput, FetchAllUsersInputs } from './schema';
-import { ERROR404, ERROR500, STANDARD } from '@/helpers/constants';
+import { ERROR500, STANDARD } from '@/helpers/constants';
 
 export async function updateVerificationStatus(
   req: FastifyRequestTypebox<typeof UpdateStatusInput>,
@@ -19,7 +19,7 @@ export async function updateVerificationStatus(
     });
 
     if (!updatedUserKycStatus)
-      rep.code(ERROR404.statusCode).send({ msg: ERRORS.userNotExists });
+      rep.code(STANDARD.NOCONTENT).send({ msg: ERRORS.userNotExists });
     else rep.code(STANDARD.SUCCESS).send({ data: updatedUserKycStatus });
   } catch (error) {
     console.error('Error fetching user status: ', error);
@@ -44,7 +44,7 @@ export async function fetchAllUsers(
     });
 
     if (!userKycStatus)
-      rep.code(ERROR404.statusCode).send({ msg: ERRORS.userNotExists });
+      rep.code(STANDARD.NOCONTENT).send({ msg: ERRORS.userNotExists });
     else rep.code(STANDARD.SUCCESS).send({ data: userKycStatus });
   } catch (error) {
     console.error('Error fetching user status: ', error);
