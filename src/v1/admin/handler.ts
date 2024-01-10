@@ -1,14 +1,15 @@
 import { FastifyRequestTypebox, FastifyReplyTypebox } from '@/v1/fastifyTypes';
-import { prisma } from '@/db/index';
+import { prisma } from '@/config/db';
 import { ERRORS } from '@/helpers/errors';
 import { UpdateStatusInput, FetchAllUsersInputs } from './schema';
 import { ERROR500, STANDARD } from '@/helpers/constants';
+import { allolianceSdk } from '@/config/sdk';
 
 export async function updateVerificationStatus(
   req: FastifyRequestTypebox<typeof UpdateStatusInput>,
   rep: FastifyReplyTypebox<typeof UpdateStatusInput>
 ): Promise<void> {
-  const { user_id, kyc_status } = req.body;
+  const { user_id, kyc_status, allo_profile_id } = req.body;
 
   try {
     const updatedUserKycStatus = await prisma.kyc.update({
@@ -20,7 +21,21 @@ export async function updateVerificationStatus(
 
     if (!updatedUserKycStatus)
       rep.code(STANDARD.NOCONTENT).send({ msg: ERRORS.userNotExists });
-    else rep.code(STANDARD.SUCCESS).send({ data: updatedUserKycStatus });
+    else {
+      const metadata = await allolianceSdk.createKYCMetadata(
+        user_id.toString(),
+        allo_profile_id,
+        true
+      );
+      const ipfsHash = await allolianceSdk.uploadMetadataToIpfs(metadata);
+
+      if (ipfsHash) {
+        rep
+          .code(STANDARD.SUCCESS)
+          .send({ data: updatedUserKycStatus, ...ipfsHash });
+      } else
+        rep.code(STANDARD.NOCONTENT).send({ msg: ERRORS.failedIpfsUpload });
+    }
   } catch (error) {
     console.error('Error fetching user status: ', error);
     rep.code(ERROR500.statusCode).send({ msg: ERROR500.message });

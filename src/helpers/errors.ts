@@ -9,4 +9,5 @@ export const ERRORS = {
   tokenError: 'Invalid Token',
 
   createKycError: 'Failed to submit KYC',
+  failedIpfsUpload: 'Failed to upload to IPFS',
 };

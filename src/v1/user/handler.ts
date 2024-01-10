@@ -1,6 +1,6 @@
 import { FastifyRequestTypebox, FastifyReplyTypebox } from '@/v1/fastifyTypes';
 import { KycStatus } from '@prisma/client';
-import { prisma } from '@/db/index';
+import { prisma } from '@/config/db';
 import { ERRORS } from '@/helpers/errors';
 import { SubmitInput, StatusInput } from './schema';
 import { ERROR500, STANDARD } from '@/helpers/constants';

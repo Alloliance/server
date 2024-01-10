@@ -14,9 +14,10 @@ generator client {
 model User {
     user_id Int @id @default(autoincrement())
 
-    email          String  @unique
-    wallet_address String  @unique
-    name           String?
+    allo_profile_id String  @unique
+    email           String  @unique
+    wallet_address  String  @unique
+    name            String?
 
     created_at DateTime @default(now())
     Kyc        Kyc?

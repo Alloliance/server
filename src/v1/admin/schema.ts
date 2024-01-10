@@ -5,6 +5,7 @@ export const UpdateStatusInput = {
   body: t.Object({
     user_id: t.Number(),
     kyc_status: t.Enum(KycStatus),
+	allo_profile_id: t.String()
   }),
   response: {
     200: t.Object({
