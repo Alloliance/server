@@ -9,7 +9,7 @@ export async function submitKycToDb(
   req: FastifyRequestTypebox<typeof SubmitInput>,
   rep: FastifyReplyTypebox<typeof SubmitInput>
 ): Promise<void> {
-  const { documents, endUserInfo } = req.body;
+  const { documents, endUserInfo } = req.body as any;
 
   try {
     const kycSubmitted = await prisma.user.create({
