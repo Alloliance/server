@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl"]
+}
+
+model User {
+    user_id Int @id @default(autoincrement())
+
+    email          String  @unique
+    wallet_address String  @unique
+    name           String?
+
+    created_at DateTime @default(now())
+    Kyc        Kyc?
+}
+
+model Kyc {
+    kyc_id  Int @id @default(autoincrement())
+    user_id Int @unique
+
+    kyc_type KycType
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt()
+
+    document_type DocumentType
+    kyc_data      Json
+
+    user User @relation(fields: [user_id], references: [user_id])
+}
+
+enum KycType {
+    SUBMITTED
+    SUCCESSFUL
+    UNSUCCESSFUL
+}
+
+enum DocumentType {
+    ID_CARD
+    DRIVERS_LICENSE
+    PASSPORT
+    VOTER_ID
+}
